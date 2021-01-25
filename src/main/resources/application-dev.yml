@@ -1,0 +1,29 @@
+server:
+  port: 29007
+  servlet:
+    context-path: /api
+  application:
+    name: bucket
+spring:
+  datasource:
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/bucket?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+logging:
+  level:
+    com:
+      baomidou:
+        mybatisplus: debug
+    cn:
+      bdqfork:
+        bucket: debug
+data:
+  path: data

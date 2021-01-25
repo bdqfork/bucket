@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqfork.bucket.domain.file.mapper.FileMapper">
+  <resultMap id="BaseResultMap" type="cn.bdqfork.bucket.domain.file.entity.File">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="directory_id" jdbcType="BIGINT" property="directoryId" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="hashcode" jdbcType="VARCHAR" property="hashcode" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="last_modified_time" jdbcType="TIMESTAMP" property="lastModifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, directory_id, version, hashcode, created_time, last_modified_time
+  </sql>
+</mapper>
