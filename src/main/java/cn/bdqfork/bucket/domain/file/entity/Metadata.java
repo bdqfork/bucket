@@ -8,8 +8,8 @@ import java.util.Date;
 /**
  * 
  */
-@TableName("file")
-public class File extends Model<File> {
+@TableName("metadata")
+public class Metadata extends Model<Metadata> {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -19,28 +19,22 @@ public class File extends Model<File> {
     private Long id;
 
     /**
-     * 文件名
+     * 自定义元数据键
      */
-    @TableField("name")
-    private String name;
+    @TableField("key")
+    private String key;
 
     /**
-     * 所属目录id
+     * 自定义元数据值
      */
-    @TableField("directory_id")
-    private Long directoryId;
+    @TableField("value")
+    private String value;
 
     /**
-     * 版本号，0表示已删除
+     * 所属文件id
      */
-    @TableField("version")
-    private Integer version;
-
-    /**
-     * 文件散列值
-     */
-    @TableField("hashcode")
-    private String hashcode;
+    @TableField("file_id")
+    private Long fileId;
 
     /**
      * 创建时间
@@ -62,36 +56,28 @@ public class File extends Model<File> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getKey() {
+        return key;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public Long getDirectoryId() {
-        return directoryId;
+    public String getValue() {
+        return value;
     }
 
-    public void setDirectoryId(Long directoryId) {
-        this.directoryId = directoryId;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public Integer getVersion() {
-        return version;
+    public Long getFileId() {
+        return fileId;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getHashcode() {
-        return hashcode;
-    }
-
-    public void setHashcode(String hashcode) {
-        this.hashcode = hashcode;
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
     }
 
     public Date getCreatedTime() {

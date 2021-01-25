@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.bdqfork.bucket.domain.file.mapper.BucketMapper">
-  <resultMap id="BaseResultMap" type="cn.bdqfork.bucket.domain.file.entity.Bucket">
+<mapper namespace="cn.bdqfork.bucket.domain.file.mapper.MetadataMapper">
+  <resultMap id="BaseResultMap" type="cn.bdqfork.bucket.domain.file.entity.Metadata">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="privilege" jdbcType="TINYINT" property="privilege" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="file_id" jdbcType="BIGINT" property="fileId" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="last_modified_time" jdbcType="TIMESTAMP" property="lastModifiedTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, user_id, privilege, created_time, last_modified_time
+    id, `key`, `value`, file_id, created_time, last_modified_time
   </sql>
 </mapper>

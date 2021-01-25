@@ -31,7 +31,7 @@ public class Directory extends Model<Directory> {
     private Long bucketId;
 
     /**
-     * 父目录id，0为根目录
+     * 父目录id，-1为根目录
      */
     @TableField("parent_id")
     private Long parentId;
