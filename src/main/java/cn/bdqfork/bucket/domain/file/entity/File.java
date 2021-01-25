@@ -34,7 +34,7 @@ public class File extends Model<File> {
      * 版本号，0表示已删除
      */
     @TableField("version")
-    private Integer version;
+    private Long version;
 
     /**
      * 文件散列值
@@ -78,11 +78,11 @@ public class File extends Model<File> {
         this.directoryId = directoryId;
     }
 
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

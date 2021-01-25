@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bdqfork.bucket.domain.user.mapper.AccessMapper">
   <resultMap id="BaseResultMap" type="cn.bdqfork.bucket.domain.user.entity.Access">
-    <id column="id" jdbcType="BIGINT" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="access_key_id" jdbcType="VARCHAR" property="accessKeyId" />
     <result column="access_key_secret" jdbcType="VARCHAR" property="accessKeySecret" />
     <result column="active" jdbcType="TINYINT" property="active" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="last_modified_time" jdbcType="TIMESTAMP" property="lastModifiedTime" />
   </resultMap>
