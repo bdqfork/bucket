@@ -27,3 +27,5 @@ logging:
         bucket: debug
 data:
   path: data
+file:
+  location: ./files
