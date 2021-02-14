@@ -22,38 +22,28 @@ public class FileUtils {
         return new BigInteger(1, result).toString(16);
     }
 
-    public static void saveToDisk(MultipartFile file, String path) {
+    public static void saveToDisk(MultipartFile file, String path) throws IOException{
         File dest = new File(new File(path).getAbsolutePath());
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }
-        try {
-            file.transferTo(dest);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        file.transferTo(dest);
+
     }
 
-    public static void download(String name, String path, HttpServletResponse response) {
+    public static void download(String name, String path, HttpServletResponse response) throws IOException{
         File file = new File(path);
         if (file.exists()) {
             response.setContentType("application/force-download");// 设置强制下载不打开
             response.addHeader("Content-Disposition", "attachment;fileName=" + name);// 设置文件名
-            byte[] buffer = new byte[1024];
-
-            try (FileInputStream fis = new FileInputStream(file);
-                    BufferedInputStream bis = new BufferedInputStream(fis)) {
-
+            try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));) {
+                byte[] buff = new byte[1024];
                 OutputStream os = response.getOutputStream();
-                int i = bis.read(buffer);
-                while (i != -1) {
-                    os.write(buffer, 0, i);
-                    i = bis.read(buffer);
+                int i = 0;
+                while ((i = bis.read(buff)) != -1) {
+                    os.write(buff, 0, i);
+                    os.flush();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }

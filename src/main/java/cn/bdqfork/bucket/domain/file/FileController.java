@@ -3,12 +3,13 @@ package cn.bdqfork.bucket.domain.file;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,8 @@ import cn.bdqfork.bucket.handler.exception.OperationException;
 @RestController
 @RequestMapping("file")
 public class FileController {
+
+    private final Log log = LogFactory.getLog(FileController.class);
 
     @Value("${file.location}")
     private String location;
@@ -80,7 +83,12 @@ public class FileController {
             location = location + "/";
         }
         String path = location + file.getHashcode();
-        FileUtils.download(file.getName(), path, response);
+        try {
+            FileUtils.download(file.getName(), path, response);
+        } catch (IOException e) {
+            log.error(e);
+            return "下载失败";
+        }
         return "success";
     }
 }
