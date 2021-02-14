@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,6 @@ import cn.bdqfork.bucket.domain.file.entity.File;
 import cn.bdqfork.bucket.domain.file.service.DirectoryService;
 import cn.bdqfork.bucket.domain.file.service.FileService;
 import cn.bdqfork.bucket.domain.file.vo.DirectoryVO;
-import cn.bdqfork.bucket.domain.file.vo.ShowDirectoryCondition;
 import cn.bdqfork.bucket.handler.exception.OperationException;
 
 @RestController
@@ -83,10 +83,11 @@ public class DirectoryController {
         directoryService.removeById(dirId);
     }
 
-    public Object getDirectorys(ShowDirectoryCondition condition) {
+    @GetMapping("/{bucketId}/{parentId}")
+    public Object getDirectorys(@PathVariable("bucketId") Long bucketId, @PathVariable("parentId") Long parentId) {
         LambdaQueryWrapper<Directory> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(Directory::getBucketId, condition.getBucketId());
-        lambdaQueryWrapper.eq(Directory::getParentId, condition.getParentId());
+        lambdaQueryWrapper.eq(Directory::getBucketId, bucketId);
+        lambdaQueryWrapper.eq(Directory::getParentId, parentId);
         return directoryService.list(lambdaQueryWrapper);
     }
     
