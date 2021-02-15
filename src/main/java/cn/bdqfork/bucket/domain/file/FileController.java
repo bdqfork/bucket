@@ -1,15 +1,10 @@
 package cn.bdqfork.bucket.domain.file;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.bdqfork.bucket.domain.file.entity.File;
 import cn.bdqfork.bucket.domain.file.service.FileService;
-import cn.bdqfork.bucket.domain.file.utils.FileUtils;
-import cn.bdqfork.bucket.handler.exception.OperationException;
+import cn.bdqfork.bucket.handler.result.CommonResult;
 
 @RestController
-@RequestMapping("file")
+@RequestMapping("/files")
 public class FileController {
-
-    private final Log log = LogFactory.getLog(FileController.class);
 
     @Value("${file.location}")
     private String location;
@@ -37,58 +29,49 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @PostMapping("/{dirId}")
-    public Object upload(@RequestParam("file") MultipartFile file, @PathVariable("dirId") Long dirId)
-            throws OperationException, NoSuchAlgorithmException, IOException {
-        if (file.isEmpty()) {
-            throw new OperationException("上传失败");
-        }
-        
-        String fileName = file.getOriginalFilename();
-        String fileHash = FileUtils.digest(file.getBytes());
-
-        File entity = new File();
-
-        entity.setName(fileName);
-        entity.setVersion(1);
-        entity.setDirectoryId(dirId);
-        entity.setHashcode(fileHash);
-
-        fileService.save(entity);
-
-        if(location.charAt(location.length()-1) != '/') {
-            location = location + "/";
-        }        
-
-        String path = location + fileHash;
-        FileUtils.saveToDisk(file, path);
-
-        return true;
+    /**
+     * 上传文件到目录，返回hashcode
+     * 
+     * @param file  文件流
+     * @param dirId 目录id
+     * @return CommonResult<hashcode>
+     */
+    @PostMapping("")
+    public CommonResult<String> upload(@RequestParam("file") MultipartFile file, @RequestParam("dirId") Long dirId) {
+        return CommonResult.success();
     }
 
-    @GetMapping("/dir/{dirId}")
-    public Object getFiles(@PathVariable("dirId") Long dirId) {
-        LambdaQueryWrapper<File> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(File::getDirectoryId, dirId);
-        return fileService.list(lambdaQueryWrapper);
+    /**
+     * 获取文件列表，如果目录下没有文件，返回空列表
+     * 
+     * @param dirId 目录id
+     * @return CommonResult<List<File>>
+     */
+    @GetMapping("/list")
+    public CommonResult<List<File>> list(@RequestParam("dirId") Long dirId) {
+        return CommonResult.success();
     }
 
-    @GetMapping("/{fileId}")
-    public Object downloadFile(HttpServletResponse response, @PathVariable("fileId") Long fileId) {
-        File file = fileService.getById(fileId);
-        if(file == null) {
-            return "文件不存在";
-        }
-        if(location.charAt(location.length()-1) != '/') {
-            location = location + "/";
-        }
-        String path = location + file.getHashcode();
-        try {
-            FileUtils.download(file.getName(), path, response);
-        } catch (IOException e) {
-            log.error(e);
-            return "下载失败";
-        }
-        return "success";
+    /**
+     * 删除文件，如果该文件的数据引用大于1，删除数据库记录即可，如果引用等于1，同时删除磁盘上的文件
+     * 
+     * @param hashcode hash码
+     * @return CommonResult<Boolean>
+     */
+    @Delete("/{hashcode}")
+    public CommonResult<Boolean> remove(@PathVariable("hashcode") String hashcode) {
+        return CommonResult.success();
+    }
+
+    /**
+     * 下载文件
+     * 
+     * @param hashcode hash码
+     * @param response 下载流
+     * @return
+     */
+    @GetMapping("/{hashcode}")
+    public CommonResult<Boolean> download(@PathVariable("hashcode") String hashcode, HttpServletResponse response) {
+        return CommonResult.success(true);
     }
 }
